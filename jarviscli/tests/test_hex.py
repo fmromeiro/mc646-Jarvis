@@ -1,7 +1,7 @@
 import unittest
 from tests import PluginTest
 from plugins import hex
-
+from unittest.mock import patch, call
 
 class HexTest(PluginTest):
     def setUp(self):
@@ -10,6 +10,20 @@ class HexTest(PluginTest):
     def test_0(self):
         self.test.run("0")
         self.assertEqual(self.history_say().last_text(), "0")
+
+    def test_empty_negative(self):
+        self.queue_input("-1")
+        self.test.run("")
+        self.assertEqual(self.history_say().last_text(), "-1")
+
+    def test_empty_2(self):
+        self.queue_input("2")
+        self.test.run("")
+        self.assertEqual(self.history_say().last_text(), "2")
+
+    def test_not_a_number(self):
+        self.test.run("nan")
+        self.assertEqual(self.history_say().view_text(0), "That's not a number!")
 
     def test_2(self):
         self.test.run("2")
