@@ -31,6 +31,30 @@ class BinaryTest(PluginTest):
         self.test.run("-7289")
         self.assertEqual(self.history_say().last_text(), "-1110001111001")
 
+    def test_not_a_number(self):
+        self.test.run("A")
+        self.assertEqual(self.history_say().last_text(), "This is no number, right?")
+
+    def test_empty(self):
+        self.queue_input("0")
+        self.test.run("")
+
+        self.assertEqual(self.history_say().last_text(), "0")
+
+    def test_empty_nan(self):
+        self.queue_input("A")
+        self.test.run("")
+
+        self.assertEqual(self.history_say().last_text(), "This is no number, right?")
+
+    def test_empty_negative(self):
+        self.queue_input("-1")
+        self.test.run("")
+
+        self.assertEqual(self.history_say().last_text(), "-1")
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
